@@ -165,6 +165,22 @@ namespace DBRepository.Repositories
             }
         }
 
+        public async Task<int> AddMember(string login, int eventId)
+        {
+            using (var context = ContextFactory.CreateDbContext(ConnectionString))
+            {
+                var user = (from u in context.Users
+                            where u.Login == login
+                            select u).ToList();
+                if (user.Count == 0)
+                    return -1;
+
+                context.EventMembers.Add(new EventMember { EventId = eventId, UserId = user[0].UserId, Status = false });
+                await context.SaveChangesAsync();
+                return 0;
+            }
+        }
+
 
 
 

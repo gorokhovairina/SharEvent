@@ -25,6 +25,7 @@ namespace DBRepository.Interfaces
         Task CleanEventFromGeoPoints(int eventId);
         Task<Event<GeoPoint>> GetEvent(int eventId);
         Task<List<User>> GetUsers(int eventId);
+        Task<int> AddMember(string login, int eventId);
         //Task AddEvent (Event<GeoPoint> _event);
         //Task DeleteEvent(int eventId);
         Task DeletePoint(int pointId);

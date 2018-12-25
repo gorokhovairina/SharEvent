@@ -17,7 +17,8 @@ export default class YandexApiMap extends React.Component {
             event: '',
             center: [55.76, 37.64],
             points: [],
-            users: []
+            users: [],
+            addedLogin: ''
         };
 
 
@@ -63,6 +64,22 @@ export default class YandexApiMap extends React.Component {
                 this.setState({ users: data });
                 console.log(data);
             });
+    }
+
+    updateInputValue(value) {
+        this.setState({
+            addedLogin: value
+        });
+    }
+
+    addUser() {
+        let queryTrailer = '?login=' + this.state.addedLogin + '&eventId=' + this.state.eventId;
+        fetch(constants.member + queryTrailer)
+            .then((response) => {
+            this.updateUserInfo();
+            this.setState({ addedLogin: '' })
+        });
+            
     }
 
     changeMapCenter(coord) {
@@ -191,19 +208,26 @@ export default class YandexApiMap extends React.Component {
                     <div className="event-members">
                         <div className="single-service">
                             <h1> Участники </h1>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Логин участника</th>
-                                        <th>Статус</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {usersList}
-                                </tbody>
-                            </table>
-
-                            Добавить нового участника:
+                            <div className="row3">
+                                <div className="users-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Логин участника</th>
+                                                <th>Статус</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {usersList}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className="add-user-input"> 
+                                    <h5>Добавить нового участника</h5>
+                                    <input type="input" value={this.state.addedLogin} onChange={(e) => this.updateInputValue(e.target.value)} placeholder="username" />
+                                    <input type="button" value="Добавить" onClick={() => this.addUser()} />
+                                </div>
+                            </div>
                         </div>    
                     </div>
                 </div>

@@ -95,6 +95,13 @@ namespace SharEventTest.Controllers
                await eventRepository.AddPoint(new GeoPoint { EventId = _points.EventId, PointLatitiude = _points.PointLatitiudeList[i], PointLongitude = _points.PointLongitudeList[i] });
 
         }
-        
+
+        [Route("addMemberByLogin")]
+        [HttpGet]
+        public async Task AddMember(string login, int eventId)
+        {
+            await eventRepository.AddMember(login, eventId);
+        }
+
     }
 }

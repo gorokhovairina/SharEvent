@@ -31859,7 +31859,8 @@ var YandexApiMap = function (_React$Component) {
             event: '',
             center: [55.76, 37.64],
             points: [],
-            users: []
+            users: [],
+            addedLogin: ''
         };
 
         /*Я дико извиняюсь, но это сделано, чтобы можно было нормально разбить массив с координатами на 2 отдельных поля. 
@@ -31910,6 +31911,24 @@ var YandexApiMap = function (_React$Component) {
             }).then(function (data) {
                 _this3.setState({ users: data });
                 console.log(data);
+            });
+        }
+    }, {
+        key: 'updateInputValue',
+        value: function updateInputValue(value) {
+            this.setState({
+                addedLogin: value
+            });
+        }
+    }, {
+        key: 'addUser',
+        value: function addUser() {
+            var _this4 = this;
+
+            var queryTrailer = '?login=' + this.state.addedLogin + '&eventId=' + this.state.eventId;
+            fetch(constants.member + queryTrailer).then(function (response) {
+                _this4.updateUserInfo();
+                _this4.setState({ addedLogin: '' });
             });
         }
     }, {
@@ -31965,11 +31984,11 @@ var YandexApiMap = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this5 = this;
 
             var pointsList = this.state.points.map(function (item, i) {
                 return _react2.default.createElement(_Point2.default, { key: i, id: i, name: item.coord, removePoint: function removePoint(i) {
-                        return _this4.removePoint(i);
+                        return _this5.removePoint(i);
                     } });
             });
 
@@ -32043,7 +32062,7 @@ var YandexApiMap = function (_React$Component) {
                             _react2.default.createElement(
                                 'button',
                                 { onClick: function onClick() {
-                                        _this4.parseIntoFormat(), _this4.submitData();
+                                        _this5.parseIntoFormat(), _this5.submitData();
                                     } },
                                 ' \u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u0442\u043E\u0447\u043A\u0438 \u0432 \u0431\u0430\u0437\u0435'
                             )
@@ -32109,30 +32128,53 @@ var YandexApiMap = function (_React$Component) {
                                 ' \u0423\u0447\u0430\u0441\u0442\u043D\u0438\u043A\u0438 '
                             ),
                             _react2.default.createElement(
-                                'table',
-                                null,
+                                'div',
+                                { className: 'row3' },
                                 _react2.default.createElement(
-                                    'thead',
-                                    null,
+                                    'div',
+                                    { className: 'users-table' },
                                     _react2.default.createElement(
-                                        'tr',
+                                        'table',
                                         null,
                                         _react2.default.createElement(
-                                            'th',
+                                            'thead',
                                             null,
-                                            '\u041B\u043E\u0433\u0438\u043D \u0443\u0447\u0430\u0441\u0442\u043D\u0438\u043A\u0430'
+                                            _react2.default.createElement(
+                                                'tr',
+                                                null,
+                                                _react2.default.createElement(
+                                                    'th',
+                                                    null,
+                                                    '\u041B\u043E\u0433\u0438\u043D \u0443\u0447\u0430\u0441\u0442\u043D\u0438\u043A\u0430'
+                                                ),
+                                                _react2.default.createElement(
+                                                    'th',
+                                                    null,
+                                                    '\u0421\u0442\u0430\u0442\u0443\u0441'
+                                                )
+                                            )
                                         ),
                                         _react2.default.createElement(
-                                            'th',
+                                            'tbody',
                                             null,
-                                            '\u0421\u0442\u0430\u0442\u0443\u0441'
+                                            usersList
                                         )
                                     )
                                 ),
                                 _react2.default.createElement(
-                                    'tbody',
-                                    null,
-                                    usersList
+                                    'div',
+                                    { className: 'add-user-input' },
+                                    _react2.default.createElement(
+                                        'h5',
+                                        null,
+                                        '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043D\u043E\u0432\u043E\u0433\u043E \u0443\u0447\u0430\u0441\u0442\u043D\u0438\u043A\u0430'
+                                    ),
+                                    _react2.default.createElement('input', { type: 'input', value: this.state.addedLogin, onChange: function onChange(e) {
+                                            return _this5.updateInputValue(e.target.value);
+                                        }, placeholder: 'username' }),
+                                    _react2.default.createElement('input', { type: 'button', value: '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C', onClick: function onClick() {
+                                            return _this5.addUser();
+                                        } })
                                 )
                             )
                         )
