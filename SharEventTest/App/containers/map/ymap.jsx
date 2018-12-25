@@ -30,8 +30,7 @@ export default class YandexApiMap extends React.Component {
         }
     }
 
-
-    //Тут костыль с EventId. Подробнее в EventController.cs - 50 строка
+    
     componentDidMount() {
 
         const values = queryString.parse(this.props.location.search)
@@ -52,11 +51,14 @@ export default class YandexApiMap extends React.Component {
                 console.log(data);
             });
 
-        this.updateUserInfo();
+        this.updateUsersList();
         
     }
 
-    updateUserInfo() {
+    /* запрос в базу за участниками события с EventId = this.state.eventId 
+     * data имеет вид {login: login, password: status} (я дико извиняюсь, 
+     * но создавать новую таблицу ради одного запроса у меня рука не поднялась) */
+    updateUsersList() {
         let queryTrailer = '?eventId=' + this.state.eventId;
         fetch(constants.usersByEventId + queryTrailer)
             .then(response => response.json())
@@ -66,12 +68,14 @@ export default class YandexApiMap extends React.Component {
             });
     }
 
+    /* add-login-input onChange() */
     updateInputValue(value) {
         this.setState({
             addedLogin: value
         });
     }
 
+    /* добавление в базу новой строки в EventMembers */
     addUser() {
         let queryTrailer = '?login=' + this.state.addedLogin + '&eventId=' + this.state.eventId;
         fetch(constants.member + queryTrailer)
@@ -160,7 +164,7 @@ export default class YandexApiMap extends React.Component {
 
         let eventData = this.state.event;
        
-
+        
         return (
             <div className="event-container">
                 <div className="row">

@@ -17,6 +17,8 @@ namespace DBRepository.Repositories
 
         }
 
+        /* POINTS */
+
         public async Task<Event<GeoPoint>> GetPoints(int eventId)
         {
             var result = new Event<GeoPoint>() { EventId = eventId };
@@ -30,6 +32,52 @@ namespace DBRepository.Repositories
             }
             return result;
         }
+
+        public async Task<List<int>> GetAllPoints(int eventId)
+        {
+            using (var context = ContextFactory.CreateDbContext(ConnectionString))
+            {
+                var temp = from p in context.GeoPoints select p;
+                return await context.GeoPoints.Select(e => e.EventId).ToListAsync();
+
+            }
+
+        }
+
+        public async Task AddPoint(GeoPoint _point)
+        {
+            using (var context = ContextFactory.CreateDbContext(ConnectionString))
+            {
+                context.GeoPoints.Add(_point);
+                await context.SaveChangesAsync();
+
+            }
+        }
+
+        public async Task DeletePoint(int pointId)
+        {
+            using (var context = ContextFactory.CreateDbContext(ConnectionString))
+            {
+                var point = new GeoPoint() { PointId = pointId };
+                context.GeoPoints.Remove(point);
+                await context.SaveChangesAsync();
+
+            }
+        }
+
+        public async Task CleanEventFromGeoPoints(int eventId)
+        {
+            using (var context = ContextFactory.CreateDbContext(ConnectionString))
+            {
+                var result = context.GeoPoints.Where(b => b.EventId == eventId);
+
+                context.GeoPoints.RemoveRange(result);
+                await context.SaveChangesAsync();
+            }
+
+        }
+
+        /* EVENTS */
 
         public async Task<Event<GeoPoint>> GetEvent(int eventId)
         {
@@ -47,42 +95,6 @@ namespace DBRepository.Repositories
                 result.Points = eventPoints.Points;
             }
             return result;
-        }
-
-        public async Task<List<User>> GetUsers(int eventId)
-        {
-            var result = new List<User>();
-            using (var context = ContextFactory.CreateDbContext(ConnectionString))
-            {
-                // HERE
-                var tmp = (from em in context.EventMembers
-                           join u in context.Users
-                           on em.UserId equals u.UserId
-                           where em.EventId == eventId
-                           select u);
-
-                result = await tmp.ToListAsync();
-
-                foreach (var user in result)
-                {
-                    var status = (from em in context.EventMembers
-                                  where em.UserId == user.UserId
-                                  select em.Status).ToList()[0];
-                    user.Password = status.ToString();
-                }
-            }
-            return result;
-        }
-
-        public async Task<List<int>> GetAllPoints(int eventId)
-        {
-            using (var context = ContextFactory.CreateDbContext(ConnectionString))
-            {
-                var temp = from p in context.GeoPoints select p;
-                return await context.GeoPoints.Select(e => e.EventId).ToListAsync();
-
-            }
-
         }
 
         public async Task<List<Event<GeoPoint>>> GetEventsWhereAdminHasId(int userId)
@@ -131,6 +143,18 @@ namespace DBRepository.Repositories
             return result;
         }
 
+        public async Task<int> AddEvent(Event<GeoPoint> _event)
+        {
+            using (var context = ContextFactory.CreateDbContext(ConnectionString))
+            {
+                context.Events.Add(_event);
+                await context.SaveChangesAsync();
+                return _event.EventId;
+            }
+        }
+
+        /* USERS JOIN REQUESTS */ 
+
         public async Task AcceptJoinRequest(EventMember eventMember)
         {
             using (var context = ContextFactory.CreateDbContext(ConnectionString))
@@ -154,15 +178,29 @@ namespace DBRepository.Repositories
             }
         }
 
-
-        public async Task AddPoint(GeoPoint _point)
+        public async Task<List<User>> GetUsers(int eventId)
         {
+            var result = new List<User>();
             using (var context = ContextFactory.CreateDbContext(ConnectionString))
             {
-                context.GeoPoints.Add(_point);
-                await context.SaveChangesAsync();
+                // HERE
+                var tmp = (from em in context.EventMembers
+                           join u in context.Users
+                           on em.UserId equals u.UserId
+                           where em.EventId == eventId
+                           select u);
 
+                result = await tmp.ToListAsync();
+
+                foreach (var user in result)
+                {
+                    var status = (from em in context.EventMembers
+                                  where em.UserId == user.UserId
+                                  select em.Status).ToList()[0];
+                    user.Password = status.ToString();
+                }
             }
+            return result;
         }
 
         public async Task<int> AddMember(string login, int eventId)
@@ -184,37 +222,10 @@ namespace DBRepository.Repositories
 
 
 
-        public async Task DeletePoint(int pointId)
-        {
-            using (var context = ContextFactory.CreateDbContext(ConnectionString))
-            {
-                var point = new GeoPoint() { PointId = pointId };
-                context.GeoPoints.Remove(point);
-                await context.SaveChangesAsync();
+        
 
-            }
-        }
+        
 
-        public async Task<int> AddEvent(Event<GeoPoint> _event)
-        {
-            using (var context = ContextFactory.CreateDbContext(ConnectionString))
-            {
-                context.Events.Add(_event);
-                await context.SaveChangesAsync();
-                return _event.EventId;
-            }
-        }
-
-        public async Task CleanEventFromGeoPoints(int eventId)
-        {
-            using (var context = ContextFactory.CreateDbContext(ConnectionString))
-            {
-                var result = context.GeoPoints.Where(b => b.EventId == eventId);
-                
-                context.GeoPoints.RemoveRange(result);
-                await context.SaveChangesAsync();
-            }
-
-        }
+        
     }
 }
