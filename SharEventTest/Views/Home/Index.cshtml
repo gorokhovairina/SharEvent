@@ -12,6 +12,10 @@
             getEventsByCreatorList: '@Url.RouteUrl("DefaultApi", new { controller = "event", action = "eventsByCreator" })',
             getEventsByMemberList: '@Url.RouteUrl("DefaultApi", new { controller = "event", action = "eventsByMember"})',
             getEventsRequestsToJoinList: '@Url.RouteUrl("DefaultApi", new { controller = "event", action = "eventsJoinRequests"})',
+            acceptJoinRequest: '@Url.RouteUrl("DefaultApi", new { controller = "event", action = "acceptRequest" })',
+            declineJoinRequest: '@Url.RouteUrl("DefaultApi", new { controller = "event", action = "declineRequest" })',
+            eventById: '@Url.RouteUrl("DefaultApi", new { controller = "event", action = "eventById" })',
+            usersByEventId: '@Url.RouteUrl("DefaultApi", new { controller = "event", action = "usersByEventId" })',
             tokenKey: 'tokenKey',
             currentUserId: 'currentUserId'
 

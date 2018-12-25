@@ -1,12 +1,9 @@
 ﻿import React, { Component } from 'react';
 import Point from './Point.jsx'
-import Field from './Field.jsx'
 import YMap from './Map.jsx';
 import queryString from 'query-string'
 
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import { YMaps, Map, Placemark } from 'react-yandex-maps'
-import { YandexApiTest } from './ymapbb.jsx'
+import 'isomorphic-fetch';
 
 
 
@@ -16,9 +13,11 @@ export default class YandexApiMap extends React.Component {
         super(props);
 
         this.state = {
-            eventId: 1, //это изменится при загрузке компонента
+            eventId: 1, 
+            event: '',
             center: [55.76, 37.64],
-            points: []
+            points: [],
+            users: []
         };
 
 
@@ -35,9 +34,10 @@ export default class YandexApiMap extends React.Component {
     componentDidMount() {
 
         const values = queryString.parse(this.props.location.search)
-        this.state.eventId=values.eventId // EventId из ссылки
+        this.state.eventId = values.eventId // EventId из ссылки
 
-        fetch("https://localhost:44309/api/event/page?eventId=" + this.state.eventId)
+        let queryTrailer = '?eventId=' + this.state.eventId;
+        fetch(constants.eventById + queryTrailer)
             .then(response => response.json())
             .then(data => {
                 const results = data.points.map(x => {
@@ -47,6 +47,21 @@ export default class YandexApiMap extends React.Component {
                     }
                 })
                 this.setState({ points: results });
+                this.setState({ event: data });
+                console.log(data);
+            });
+
+        this.updateUserInfo();
+        
+    }
+
+    updateUserInfo() {
+        let queryTrailer = '?eventId=' + this.state.eventId;
+        fetch(constants.usersByEventId + queryTrailer)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ users: data });
+                console.log(data);
             });
     }
 
@@ -65,10 +80,10 @@ export default class YandexApiMap extends React.Component {
         })
     }
 
-    addPoint(name, coord) {
+    addPoint(coord) {
         this.setState({
             points: this.state.points.concat([{
-                coord: this.state.center
+                coord: coord //сорян за такое
             }])
         })
     }
@@ -105,47 +120,94 @@ export default class YandexApiMap extends React.Component {
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8'
                 },
-                //Пока не получаем EventId,временный костыль. Чуть подробнее на EventController.cs - 50 строка.
                 body: JSON.stringify({ EventId: this.state.eventId, PointLatitiudeList: this.pointsToSend.lats, PointLongitudeList: this.pointsToSend.longs })
-            }).then((response) => { console.log(response.body); this.setState() });
-        
-
+            }).then((response) => {
+                console.log(response.body); this.setState()
+            });
     }
    
     render() {
         const pointsList = this.state.points.map((item, i) =>
             <Point key={i} id={i} name={item.coord} removePoint={(i) => this.removePoint(i)} />
         );
+        
 
+        let usersList = this.state.users.map((item, i) => {
+            return (
+                <tr key={i}>
+                    <td> {item.login} </td>
+                    <td> {item.password == 'True' ? 'Подтвердил участие' : 'Ожидание подтверждения'} </td>
+                </tr>
+            );
+        })
 
+        let eventData = this.state.event;
        
 
         return (
-            <div className="map">
+            <div className="event-container">
+                <div className="row">
+                    <div className="event-points-table">
+                        <div className="single-service">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Номер точки</th>
+                                        <th>Описание</th>
+                                        <th> </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        {pointsList}
+                                </tbody>
+                            </table>
+                            <button onClick={() => { this.parseIntoFormat(), this.submitData(); }}> Обновить точки в базе</button>
+                        </div>
+                    </div>
+                    <div className="event-map">
+                        <div className="single-service">
+                            <YMap 
+                                center={this.state.center}
+                                points={this.state.points}
+                                changePoint={this.changePoint.bind(this)}
+                                addPoint={this.addPoint.bind(this)}
+                                changeMapCenter={this.changeMapCenter.bind(this)}
+                                />
+                        </div>
+                    </div>
+                </div>
 
-                    <Field addPoint={this.addPoint.bind(this)} />
-
-                    <div className="app__points">
-                        {pointsList}
+                <div className="row2">
+                    <div className="event-main-info">
+                        <div className="single-service">
+                            <h1> Событие </h1>
+                            Название:
+                            <h2> {eventData.eventName} </h2>
+                            Описание:
+                            <h2> {eventData.eventDescription} </h2>
+                        </div>    
                     </div>
 
-                
+                    <div className="event-members">
+                        <div className="single-service">
+                            <h1> Участники </h1>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Логин участника</th>
+                                        <th>Статус</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {usersList}
+                                </tbody>
+                            </table>
 
-                    <YMap
-                        center={this.state.center}
-                        points={this.state.points}
-                        changePoint={this.changePoint.bind(this)}
-                        changeMapCenter={this.changeMapCenter.bind(this)}
-                    />
-                    
-                    <div>
-                        Center:  {this.state.center}
+                            Добавить нового участника:
+                        </div>    
                     </div>
-
-                <button onClick={() => { this.parseIntoFormat(), this.submitData(); }}> Обновить точки в базе</button>
-
-            </div>
-           
+                </div>
+            </div>           
         );
     }
 };

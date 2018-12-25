@@ -29,7 +29,8 @@ class Header extends React.Component {
 
 
         let logoutButton = this.props.header.isLogged ?
-            <a className="link" onClick={() => { if (confirm('Вы уверены что хотите выйти?')) this.props.logout() }}>Выход</a>
+            /*<a className="link" to="/" onClick={() => { if (confirm('Вы уверены что хотите выйти?')) this.props.logout();  }}>Выход</a>*/
+            <Link to="/" onClick={() => { if (confirm('Вы уверены что хотите выйти?')) this.props.logout(); }}> Выход </Link>
             : '';
 
         // LOGIN BUTTON //

@@ -9,11 +9,11 @@ class Point extends Component {
 
   render() {
     return (
-      <div className="point">
-        id: {this.props.id} 
-        coord: {this.props.name}
-        <div className="point__remove" onClick={this.removePoint.bind(this)}>✘</div>
-      </div>
+            <tr>
+                <td>{this.props.id}</td>
+                <td>{this.props.name}</td>
+                <td><div className="point__remove" onClick={this.removePoint.bind(this)}>✘</div></td>
+            </tr>
     )
   }
 }

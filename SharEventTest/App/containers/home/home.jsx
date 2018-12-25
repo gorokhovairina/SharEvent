@@ -3,7 +3,10 @@
 export default class Home extends React.Component {
     render() {
         return (
-            <div>Чтобы не падало</div>
+            <div>
+                <h1 style={{ textAlign: "center" }}>Добрый день</h1>
+                <h3 style={{ textAlign: "center" }}> Авторизуйся или зарегистрируйся уже наконец!!! </h3>
+            </div>
         );
     }
 };

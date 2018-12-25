@@ -53,10 +53,7 @@ export default class AddEventForm extends React.Component{
 
                         <h3>Описание </h3>
                         <textarea name="eventDescription" placeholder="Description" value={this.state.eventDescription} onChange={this.handleChange} />
-
-                        <h3>Url</h3>
-                        <input type="url" name="eventUrl" placeholder="Url" value={this.state.eventUrl} onChange={this.handleChange} />
-
+                        
                         <div className='submitForm'>
                             <input type="submit" value="Добавить" onClick={() => {
                                 this.submitData();

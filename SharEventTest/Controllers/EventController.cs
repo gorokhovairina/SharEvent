@@ -25,10 +25,21 @@ namespace SharEventTest.Controllers
         [HttpGet]
         public async Task<Event<GeoPoint>> GetAllPoints(int eventId)
         {
-            //55.75, 37.57
-            //await eventRepository.AddPoint(new GeoPoint { EventId = 3, PointLatitiude = 55, PointLongitude = 37 });
             return await eventRepository.GetPoints(eventId);
+        }
 
+        [Route("eventById")]
+        [HttpGet]
+        public async Task<Event<GeoPoint>> GetEventById(int eventId)
+        {
+            return await eventRepository.GetEvent(eventId);
+        }
+
+        [Route("usersByEventId")]
+        [HttpGet]
+        public async Task<List<User>> GetUsersByEventId(int eventId)
+        {
+            return await eventRepository.GetUsers(eventId);
         }
 
         [Route("eventsByCreator")]
@@ -50,6 +61,20 @@ namespace SharEventTest.Controllers
         public async Task<List<Event<GeoPoint>>> GetEventsLoinRequestsListByMemberId(int userId)
         {
             return await eventRepository.GetEventsJoinRequestsWhereMemberHasId(userId);
+        }
+
+        [Route("acceptRequest")]
+        [HttpPost]
+        public async Task AcceptJoinRequest([FromBody] EventMember eventMember)
+        {
+            await eventRepository.AcceptJoinRequest(eventMember);
+        }
+
+        [Route("declineRequest")]
+        [HttpPost]
+        public async Task DeclineJoinRequest([FromBody] EventMember eventMember)
+        {
+            await eventRepository.DeclineJoinRequest(eventMember);
         }
 
         //[Authorize]

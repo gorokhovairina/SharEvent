@@ -47,8 +47,8 @@ header {
     padding: 15px;
     color: #FFFFFF;
     font-size: 14px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
+    /*-webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;*/
 }
 
 .loginForm h2 {
@@ -109,7 +109,7 @@ header .main-header ul li {
 /* ADD EVENT FORM */
 
 .popup {
-    position: fixed;
+    position:absolute;
     width: 100%;
     height: 100%;
     top: 0;
@@ -158,8 +158,8 @@ header .main-header ul li {
     padding: 15px;
     color: #FFFFFF;
     font-size: 14px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
+    /*-webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;*/
 }
 
 .popup-inner button {
@@ -195,5 +195,229 @@ header .main-header ul li {
     color: black;
 }
 
+/* EVENTS PAGE */
 
+.events-list-container {
+    width: 100%;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: "Roboto", sans-serif;
+}
+
+.events-list-container h1 {
+    padding-bottom: 50px;
+    text-align: center;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.events-list-container .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 15px;
+    margin-left: -15px;
+    box-sizing: border-box;
+}
+
+.events-list-container .col-event {
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.events-list-container .single-service {
+    text-align: center;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 25px;
+    transition: all 0.3s ease 0s;
+    box-sizing: border-box;
+    display: block;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.events-list-container .single-service h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-family: "Roboto", sans-serif;
+    color: #222;
+    line-height: 1.2em !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.events-list-container .single-service h3 {
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-family: "Roboto", sans-serif;
+    color: rgba(0, 0, 0, 0.5);
+    line-height: 1.2em !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.event-preview {
+    text-align: center;
+    border: 2px solid #eee;
+    background-color: rgba(0,0,0,0.01);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+    transition: all 0.3s ease 0s;
+    box-sizing: border-box;
+    display: block;
+}
+
+.event-preview a {
+    text-decoration: none;
+    font-size: 18px;
+    transition: all 0.3s ease 0s;
+    color: #222;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.event-preview .event-description-preview {
+    text-decoration: none;
+    font-size: 15px;
+    transition: all 0.3s ease 0s;
+    color: rgba(0, 0, 0, 0.5);
+    background-color: transparent;
+}
+
+.event-preview button {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    margin: 2px;
+    width: 100px;
+    border: 0;
+    padding: 5px;
+    color: #FFFFFF;
+    font-size: 10px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+        
+}
+
+.event-preview .accept {
+    background: green;
+}
+
+.event-preview  .decline {
+    background: gray;
+}
+
+/* EVENT PAGE */
+
+.event-container {
+    width: 100%;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.event-container .row, .row2 {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 15px;
+    box-sizing: border-box;
+}
+
+.event-points-table {
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.event-points-table button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    margin: 2px;
+    width: 100%;
+    border: 0;
+    padding: 5px;
+    color: white;
+    font-size: 10px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    background: gray;
+    border-radius: 5px;
+}
+
+.event-map {
+    flex: 0 0 66.66666%;
+    max-width: 66.66666%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.event-main-info {
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.event-members {
+    flex: 0 0 66.66666%;
+    max-width: 66.66666%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.event-container .single-service {
+    text-align: center;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s ease 0s;
+    box-sizing: border-box;
+    display: block;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.24);
+}
+
+.event-container .single-service h1 {
+    font-size: 25px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.event-container .single-service h2 {
+    font-size: 21px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 

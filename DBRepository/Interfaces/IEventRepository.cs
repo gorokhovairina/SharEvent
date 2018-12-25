@@ -15,11 +15,16 @@ namespace DBRepository.Interfaces
         Task<List<Event<GeoPoint>>> GetEventsWhereMemberHasId(int userId);
         Task<List<Event<GeoPoint>>> GetEventsJoinRequestsWhereMemberHasId(int userId);
 
+        Task AcceptJoinRequest(EventMember eventMember);
+        Task DeclineJoinRequest(EventMember eventMember);
+
         //Task<Event<GeoPoint>> GetEvent(int eventId);
         Task AddPoint(GeoPoint _point);
 
         Task<int> AddEvent(Event<GeoPoint> _event);
         Task CleanEventFromGeoPoints(int eventId);
+        Task<Event<GeoPoint>> GetEvent(int eventId);
+        Task<List<User>> GetUsers(int eventId);
         //Task AddEvent (Event<GeoPoint> _event);
         //Task DeleteEvent(int eventId);
         Task DeletePoint(int pointId);

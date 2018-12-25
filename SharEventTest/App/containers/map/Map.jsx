@@ -15,6 +15,10 @@ class YMap extends Component {
         this.props.changeMapCenter(e.originalEvent.target._yandexState._model.center);
     }
 
+    addPoint(e) {
+        this.props.addPoint(e.get('coords'));
+    }
+
 
     render() {
 
@@ -27,11 +31,15 @@ class YMap extends Component {
                     item.coord
                 }
                 properties={{
-                    hintContent: item.name,
-                    balloonContent: item.name
+                    balloonContent: 'darov',
+                    balloonContentHeader: 'header',
+                    hintContent: 'hint',
+                    iconContent: i
                 }}
                 options={{
-                    draggable: true
+                    preset: "islands#darkOrangeIcon",
+                    draggable: true,
+                    openBalloonOnClick: true
                 }}
 
                 onDragEnd={(e) => this.changePoint(e, i)}
@@ -48,7 +56,7 @@ class YMap extends Component {
 
         return (
             <YMaps>
-                <Map state={mapState} onActionEnd={this.changeMapCenter.bind(this)} width="auto">
+                <Map state={mapState} onActionEnd={this.changeMapCenter.bind(this)} onClick={this.addPoint.bind(this)} width="auto">
                     {pointsList}
                 </Map>
             </YMaps>
